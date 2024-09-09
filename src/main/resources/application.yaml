@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: slutedemoserver
+  sleuth:
+    enabled: true
+    traceId128: true
+    sampler:
+      probability: 1.0
+    web:
+      client:
+        enabled: true
+  logging:
+    level.org.springframework.cloud.sleuth: INFO
+logging.pattern.level: "%5p [${spring.zipkin.service.name:${spring.application.name:}},%X{traceId:-},%X{spanId:-},%X{key:-}]"
+
+logging:
+  level:
+    root: INFO
+server:
+  port: 8081

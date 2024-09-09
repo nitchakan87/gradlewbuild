@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="app_name" value="slutedemoserver" />
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <property name="mdc" value="[%X{traceId:-}, %X{spanId:-}, %X{X-Request-ID:-}]"/>
+    <property name="CONSOLE_LOG" value="%clr(%d{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}){faint} %clr(%5p) %clr([%19.19t]){magenta} %clr(--){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %replace(${mdc}){'^\\[, , \\]$', ''} %m%n" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"app-name":"${app_name}", "category":"application"}</customFields>
+            <fieldNames>
+                <timestamp>@timestamp</timestamp>
+                <version>[ignore]</version>
+            </fieldNames>
+        </encoder>
+    </appender>
+
+    <appender name="APPLICATION" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"app-name":"${app_name}", "category":"application"}</customFields>
+        </encoder>
+    </appender>
+
+    <logger name="slutedemoserver" level="INFO" additivity="false">
+        <appender-ref ref="APPLICATION"/>
+    </logger>
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
